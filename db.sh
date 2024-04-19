@@ -44,7 +44,7 @@ VALIDATE $? "enable the mysqld"
 systemctl start mysqld &>>$LOGFILE
 VALIDATE $? "start the mysqld"
 
-mysql_secure_installation --set-root-pass &{DB_SERVER_PASSWORD}
+mysql_secure_installation --set-root-pass ${DB_SERVER_PASSWORD}
 VALIDATE $? "setting up username and password for DB"
 
 
