@@ -33,18 +33,18 @@ else
     echo "Super User"     
 fi  
 
-dnf install mysql-server -y
+dnf install mysql-server -y $>>$LOGFILE
 VALIDATE $? "mysql server installation"
 
 
-systemctl enable mysqld
+systemctl enable mysqld $>>$LOGFILE
 VALIDATE $? "enable the mysqld"
 
 
-systemctl start mysqld
+systemctl start mysqld $>>$LOGFILE
 VALIDATE $? "start the mysqld"
 
-mysql_secure_installation --set-root-pass ExpenseApp@1
+mysql_secure_installation --set-root-pass ${DB_SERVER_PASSWORD}
 VALIDATE $? "setting up username and password for DB"
 
 
