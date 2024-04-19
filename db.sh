@@ -1,5 +1,6 @@
 #!/usr/bin 
 USERID=$(id -u)
+echo $USERID
 
 
 if [ $USERID -ne 0 ];
