@@ -35,19 +35,19 @@ fi
 
 
 
-dnf module disable nodejs -y 
+dnf module disable nodejs -y &>>$LOGFILE
 VALIDATE $? "Disable Node JS"
 
 
-dnf module enable nodejs:20 -y
+dnf module enable nodejs:20 -y &>>$LOGFILE
 VALIDATE $? "Enable Node Js:20"
 
 
-dnf install nodejs -y
+dnf install nodejs -y &>>$LOGFILE
 VALIDATE $? "Installation Node JS "
 
 
-id expense 
+id expense &>>$LOGFILE
 if [ $? -ne 0];
 then
     useradd expense 
@@ -57,33 +57,47 @@ else
 fi 
 
 
-#mkdir /app 
+mkdir -p /app &>>$LOGFILE
+VALIDATE $? "created app directory"
+
+#curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip 
+&>>$LOGFILE
+VALIDATE $? "Download code to tmp folder"
 
 
-#curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+cd /app &>>$LOGFILE
+VALIDATE $? "Move to app folder"
+
+rm -rf /app/* &>>$LOGFILE
+VALIDATE $? "Removed the app in app folder"
+
+unzip /tmp/backend.zip &>>$LOGFILE
+VALIDATE $? "Unzip the backend code"
 
 
-#cd /app
+npm install &>>$LOGFILE
+VALIDATE $? "NPM install for node js"
 
 
-#unzip /tmp/backend.zip
+systemctl daemon-reload &>>$LOGFILE
+VALIDATE $? "daemon reload"
 
 
-#npm install
+systemctl start backend &>>$LOGFILE
+VALIDATE $? "backend starts"
 
 
-#systemctl daemon-reload 
+systemctl enable backend &>>$LOGFILE
+VALIDATE $? "backend enable"
 
 
-#systemctl start backend
+
+dnf install mysql -y  &>>$LOGFILE
+VALIDATE $? "instll mysql client"
 
 
-#systemctl enable backend
+mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p${DB_SERVER_PASSWORD} < /app/schema/backend.sql &>>$LOGFILE
+VALIDATE $? "Schema loading"
 
-
-#dnf install mysql -y 
-
-
-#mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -pExpenseApp@1 < /app/schema/backend.sql
-
-#systemctl restart backend
+systemctl restart backend &>>$LOGFILE
+VALIDATE $? "Restart backend"
