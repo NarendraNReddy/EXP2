@@ -60,8 +60,7 @@ fi
 mkdir -p /app &>>$LOGFILE
 VALIDATE $? "created app directory"
 
-curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip 
-&>>$LOGFILE
+curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip &>>$LOGFILE
 VALIDATE $? "Download code to tmp folder"
 
 
@@ -99,7 +98,7 @@ dnf install mysql -y  &>>$LOGFILE
 VALIDATE $? "instll mysql client"
 
 
-mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p${DB_SERVER_PASSWORD} < /app/schema/backend.sql &>>$LOGFILE
+mysql -h db.daws78s-nnr.online -uroot -p${DB_SERVER_PASSWORD} < /app/schema/backend.sql &>>$LOGFILE
 VALIDATE $? "Schema loading"
 
 systemctl restart backend &>>$LOGFILE
