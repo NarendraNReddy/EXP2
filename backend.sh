@@ -60,7 +60,7 @@ fi
 mkdir -p /app &>>$LOGFILE
 VALIDATE $? "created app directory"
 
-#curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip 
+curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip 
 &>>$LOGFILE
 VALIDATE $? "Download code to tmp folder"
 
@@ -77,6 +77,9 @@ VALIDATE $? "Unzip the backend code"
 
 npm install &>>$LOGFILE
 VALIDATE $? "NPM install for node js"
+
+cp -rf /home/ec2-user/EXP2/backend.service /etc/systemd/system/backend.service &>>$LOGFILE
+VALIDATE $? "copying the backend service"
 
 
 systemctl daemon-reload &>>$LOGFILE
