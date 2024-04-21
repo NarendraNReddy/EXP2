@@ -46,18 +46,18 @@ VALIDATE $? "start the mysqld"
 
 #idempotency   
 
-#mysql -h db.daws78s-nnr.online -uroot -p${DB_SERVER_PASSWORD} -e 'show databases' &>>$LOGFILE
-#if [ $? -ne 0 ];
-#then
-#    mysql_secure_installation --set-root-pass ${DB_SERVER_PASSWORD} &>>$LOGFILE
-#    VALIDATE $? "setting up username and password for DB"
-#else 
-#    echo -e "Already db username and password is set... $Y SKIPPING $N "
+mysql -h db.daws78s-nnr.online -uroot -p${DB_SERVER_PASSWORD} -e 'show databases' &>>$LOGFILE
+if [ $? -ne 0 ];
+then
+    mysql_secure_installation --set-root-pass ${DB_SERVER_PASSWORD} &>>$LOGFILE
+    VALIDATE $? "setting up username and password for DB"
+else 
+    echo -e "Already db username and password is set... $Y SKIPPING $N "
     
-#fi 
+fi 
 
-mysql_secure_installation --set-root-pass ${DB_SERVER_PASSWORD} &>>$LOGFILE
-VALIDATE $? "setting up username and password for DB"
+#mysql_secure_installation --set-root-pass ${DB_SERVER_PASSWORD} &>>$LOGFILE
+#VALIDATE $? "setting up username and password for DB"
 
 
 
