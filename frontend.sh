@@ -9,9 +9,7 @@ Y="\e[33m"
 BL="\e[34m"
 N="\e[0m"
 
-echo "Enter password:"
-read DB_SERVER_PASSWORD
-#ExpenseApp@1
+
 
 VALIDATE()
 {
